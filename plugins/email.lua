@@ -19,7 +19,6 @@ end
 
 return {
  description = "E-Mail Information Grabber",
- usagehtm = '<tr><td align="center">email email addres</td><td align="right">sent email's info</td></tr>',
  usage = {"email (mail) : email info",},
  patterns = {"^[/!#][Ee]mail (.*)",},
  run = run
