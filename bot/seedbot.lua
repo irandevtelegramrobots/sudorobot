@@ -339,7 +339,7 @@ This command will send text to [group_id]
 
 *Only admins and sudo can use res, setowner, commands
 ]],
-    help_text = [[
+    --help_text = [[
 Commands list :
 
 !kick [username|id]
@@ -468,7 +468,7 @@ will return group ban list
 *Only owner can use res,setowner,promote,demote and log commands
 
 ]],
-	help_text_super =[[
+	--help_text_super =[[
 SuperGroup Commands:
 
 !info
