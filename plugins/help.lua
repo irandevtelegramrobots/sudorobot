@@ -1,5 +1,5 @@
 do
-
+ 
 function pairsByKeys(t, f)
       local a = {}
       for n in pairs(t) do table.insert(a, n) end
@@ -13,7 +13,7 @@ function pairsByKeys(t, f)
       end
       return iter
     end
-
+ 
 -- Returns true if is not empty
 local function has_usage_data(dict)
   if (dict.usage == nil or dict.usage == '') then
@@ -21,7 +21,7 @@ local function has_usage_data(dict)
   end
   return true
 end
-
+ 
 -- Get commands for that plugin
 local function plugin_help(name,number,requester)
   local plugin = ""
@@ -41,7 +41,7 @@ local function plugin_help(name,number,requester)
     plugin = plugins[name]
     if not plugin then return nil end
   end
-
+ 
     local text = ""
     if (type(plugin.usage) == "table") then
       for ku,usage in pairs(plugin.usage) do
@@ -87,33 +87,34 @@ local function plugin_help(name,number,requester)
               text = text..usage..'\n'
           end
       end
-      text = text..'______________________________\n'
+      text = text..'======================\n'
     elseif has_usage_data(plugin) then -- Is not empty
-      text = text..plugin.usage..'\n______________________________\n'
+      text = text..plugin.usage..'\n======================\n'
     end
     return text
 end
-
-
+ 
+ 
 -- !help command
 local function telegram_help()
-  local text = "Cruel Tools List:\n______________________________\n"
+  local i = 0
+  local text = "Plugins list:\n\n"
   -- Plugins names
   for name in pairsByKeys(plugins) do
     if plugins[name].hidden then
       name = nil
     else
-    text = text..'> '..name..'\n'
+    i = i + 1
+    text = text..i..'. '..name..'\n'
     end
   end
-  text = text..'______________________________'
-  text = text..'\n'..'You can use < /helps > for view all items info or can use < /help (name) > for view a item info'
-  text = text..'\n'..'For see about Sudo Bot Team, send < /ver >'
-  text = text..'\n'..'Sudo: @MAKAN'
+  text = text..'\n'..'There are '..i..' plugins help available.'
+  text = text..'\n'..'Write "!help [plugin name]" or "!help [plugin number]" for more info.'
+  text = text..'\n'..'Or "!help all" to show all info.'
   return text
 end
-
-
+ 
+ 
 -- !help all command
 local function help_all(requester)
   local ret = ""
@@ -126,7 +127,7 @@ local function help_all(requester)
   end
   return ret
 end
-
+ 
 local function run(msg, matches)
   if is_sudo(msg) then
       requester = "sudo"
@@ -137,9 +138,9 @@ local function run(msg, matches)
   else
       requester = "user"
   end
-  if matches[1] == "help" then
+  if matches[1] == "!help" then
     return telegram_help()
-  elseif matches[1] == "help" then
+  elseif matches[1] == "!help all" then
     return help_all(requester)
   else
     local text = ""
@@ -154,20 +155,21 @@ local function run(msg, matches)
     return text
   end
 end
-
+ 
 return {
-  description = "Help For Command and Tools",
+  description = "Help plugin. Get info from other plugins.  ",
   usage = {
-    "/help : view items list",
-    "/helps : view all commands and info",
-    "/help (name) : view a item commands and info",
+    "!help: Show list of plugins.",
+    "!help all: Show all commands for every plugin.",
+    "!help [plugin name]: Commands for that plugin.",
+    "!help [number]: Commands for that plugin. Type !help to get the plugin number."
   },
   patterns = {
-    "^[!#/][Hh]elp$",
-    "^[!#/][Hh]elps",
-    "^[!#/][Hh]elp (.+)"
+    "^!help$",
+    "^!help all",
+    "^!help (.+)"
   },
   run = run
 }
-
+ 
 end
